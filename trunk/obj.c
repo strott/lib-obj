@@ -15,51 +15,51 @@ static global G;
 
 obj obj_process_file(const char *fname, const char **elements_requested) {
     obj O;
-	char *buff = NULL, *item = NULL;
+    char *buff = NULL, *item = NULL;
     const char **elements_enabled = NULL;
     int buff_size = 80;
 
-	_obj_open_file(fname);
-	_obj_init_data_struct(&O);
+    _obj_open_file(fname);
+    _obj_init_data_struct(&O);
     _obj_init_elements(elements_enabled, elements_requested);
 
-//	qsort(elements_enabled, 
-//		  OBJ_ELEMENTS_COUNT, 
-//		  OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
-//		  (int(*)(const void*, const void*)) strcmp);
+//    qsort(elements_enabled, 
+//          OBJ_ELEMENTS_COUNT, 
+//          OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
+//          (int(*)(const void*, const void*)) strcmp);
 
-	while (!feof(G.fp)) {
-		while (fgets(buff, OBJ_ELEMENT_NAME_MAX_LENGTH, G.fp)) {
-			realloc(buff, sizeof(char) * buff_size);	
-		}
-		fscanf(G.fp, "%10c", buff);
-		item = (char*) bsearch (buff, elements_enabled, 
-								OBJ_ELEMENTS_COUNT, 
-								OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
-								(int(*)(const void*, const void*)) strcmp);
+    while (!feof(G.fp)) {
+        while (fgets(buff, OBJ_ELEMENT_NAME_MAX_LENGTH, G.fp)) {
+            realloc(buff, sizeof(char) * buff_size);    
+        }
+        fscanf(G.fp, "%10c", buff);
+        item = (char*) bsearch (buff, elements_enabled, 
+                                OBJ_ELEMENTS_COUNT, 
+                                OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
+                                (int(*)(const void*, const void*)) strcmp);
 
-		if (item != NULL) {
-			if (strncmp(OBJ_ELEMENT_FACE, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-				_obj_read_face(&O);
-				continue;
-			}
-			if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-				_obj_read_geometric_vertex(&O);
-				continue;
-			}
-			if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-				_obj_read_vertex_normal(&O);
-				continue;
-			}
-//			if (strncmp(OBJ_ELEMENT_TEXTURE_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-//				_obj_read_texture_vertex(&O);
-//				continue;
-//			}
-		}
-	}
+        if (item != NULL) {
+            if (strncmp(OBJ_ELEMENT_FACE, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+                _obj_read_face(&O);
+                continue;
+            }
+            if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+                _obj_read_geometric_vertex(&O);
+                continue;
+            }
+            if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+                _obj_read_vertex_normal(&O);
+                continue;
+            }
+//            if (strncmp(OBJ_ELEMENT_TEXTURE_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+//                _obj_read_texture_vertex(&O);
+//                continue;
+//            }
+        }
+    }
 
-	_obj_optimize_data_struct(&O);
-	_obj_close_file();
+    _obj_optimize_data_struct(&O);
+    _obj_close_file();
     return O;
 }
 
@@ -95,20 +95,20 @@ void _obj_init_data_struct(obj *O) {
 }
 
 void _obj_update_data_struct(obj *O, const char *name) {
-	if (strncmp(OBJ_ELEMENT_FACE, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-		O->f_size *= 2;
-		O->f = realloc(O->f, O->f_size * sizeof(face));
-	}
+    if (strncmp(OBJ_ELEMENT_FACE, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+        O->f_size *= 2;
+        O->f = realloc(O->f, O->f_size * sizeof(face));
+    }
     
-	if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-		O->v_size *= 2;
-		O->v = realloc(O->v, O->v_size * sizeof(geometric_vertex));
-	}
+    if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+        O->v_size *= 2;
+        O->v = realloc(O->v, O->v_size * sizeof(geometric_vertex));
+    }
 
-	if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-		O->vn_size *= 2;
-		O->vn = realloc(O->vn, O->vn_size * sizeof(vertex_normal));
-	}
+    if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+        O->vn_size *= 2;
+        O->vn = realloc(O->vn, O->vn_size * sizeof(vertex_normal));
+    }
     
 //    if (strncmp(OBJ_ELEMENT_TEXTURE_VERTEX, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
 //      O->vt_size *= 2;
@@ -131,59 +131,59 @@ void _obj_optimize_data_struct(obj *O) {
 }
 
 void _obj_open_file(const char *fname) {
-	if (!(G.fp = fopen(fname, "r"))) {
-		exit(ferror(G.fp));
-	}
+    if (!(G.fp = fopen(fname, "r"))) {
+        exit(ferror(G.fp));
+    }
 }
 
 void _obj_close_file(void) {
-	if (fclose(G.fp) == EOF) {
-		exit(ferror(G.fp));	
-	}
+    if (fclose(G.fp) == EOF) {
+        exit(ferror(G.fp));    
+    }
 }
 
 int _obj_read_face(obj *O) {
-	if (++O->f_count >= O->f_size) {
-		_obj_update_data_struct(O, OBJ_ELEMENT_FACE);
-	}
-	for (int i = 0; i < 3; ++i) {
-		if (!_obj_read_face_vertex(O, i)) {
-			return 0;
-		}
-	}
-	return 1;
+    if (++O->f_count >= O->f_size) {
+        _obj_update_data_struct(O, OBJ_ELEMENT_FACE);
+    }
+    for (int i = 0; i < 3; ++i) {
+        if (!_obj_read_face_vertex(O, i)) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 int _obj_read_face_vertex(obj *O, int i) {
-	fscanf(G.fp, "%d", &(O->f[O->f_count].fv[i].v));
-	if (fscanf(G.fp, "/") == 1) {
-		fscanf(G.fp, "%d", &(O->f[O->f_count].fv[i].vt));
-		fscanf(G.fp, "/%d", &(O->f[O->f_count].fv[i].vn));
-	}
-	return 1;
+    fscanf(G.fp, "%d", &(O->f[O->f_count].fv[i].v));
+    if (fscanf(G.fp, "/") == 1) {
+        fscanf(G.fp, "%d", &(O->f[O->f_count].fv[i].vt));
+        fscanf(G.fp, "/%d", &(O->f[O->f_count].fv[i].vn));
+    }
+    return 1;
 }
 
 int _obj_read_geometric_vertex(obj *O) {
-	if (++O->v_count >= O->v_size) {
-		_obj_update_data_struct(O, OBJ_ELEMENT_GEOMETRIC_VERTEX);
-	}
-	if (fscanf(G.fp, "%f%f%f", &O->v[O->v_count].x, &O->v[O->v_count].y, &O->v[O->v_count].z) != 3) {
-		return 0;
-	}
-	return 1;
+    if (++O->v_count >= O->v_size) {
+        _obj_update_data_struct(O, OBJ_ELEMENT_GEOMETRIC_VERTEX);
+    }
+    if (fscanf(G.fp, "%f%f%f", &O->v[O->v_count].x, &O->v[O->v_count].y, &O->v[O->v_count].z) != 3) {
+        return 0;
+    }
+    return 1;
 }
 
 int _obj_read_vertex_normal(obj *O) {
-	if (++O->vn_count >= O->vn_size) {
-		_obj_update_data_struct(O, OBJ_ELEMENT_VERTEX_NORMAL);
-	}
-	if (fscanf(G.fp, "%f%f%f", &O->vn[O->vn_count].i, &O->vn[O->vn_count].j, &O->vn[O->vn_count].k) != 3) {
-		return 0;
-	}
-	return 1;
+    if (++O->vn_count >= O->vn_size) {
+        _obj_update_data_struct(O, OBJ_ELEMENT_VERTEX_NORMAL);
+    }
+    if (fscanf(G.fp, "%f%f%f", &O->vn[O->vn_count].i, &O->vn[O->vn_count].j, &O->vn[O->vn_count].k) != 3) {
+        return 0;
+    }
+    return 1;
 }
 
 //int _obj_read_texture_vertex() {
-//	//TODO implement
-//	return 1;
+//    //TODO implement
+//    return 1;
 //}

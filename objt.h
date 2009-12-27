@@ -25,7 +25,7 @@ unsupported
  * Polygonal and free-form geometry statement.
  */
 typedef struct geometric_vertex_s {
-	float x, y, z, w;
+    float x, y, z, w;
 } geometric_vertex;
 
 /**
@@ -34,7 +34,7 @@ typedef struct geometric_vertex_s {
  * Vertex statement for both polygonal and free-form geometry.
  */
 typedef struct texture_vertex_s {
-	float u, v, w;
+    float u, v, w;
 } texture_vertex;
 
 /**
@@ -43,11 +43,11 @@ typedef struct texture_vertex_s {
  * Polygonal and free-form geometry statement.
  */
 typedef struct vertex_normal_s {
-	float i, j, k;
+    float i, j, k;
 } vertex_normal;
 
 typedef struct face_vertex_s {
-	int v, vt, vn;
+    int v, vt, vn;
 } face_vertex;
 
 /**
@@ -56,5 +56,5 @@ typedef struct face_vertex_s {
  * Polygonal geometry statement.
  */
  typedef struct face_s {
-	face_vertex fv[3];
+    face_vertex fv[3];
 } face;

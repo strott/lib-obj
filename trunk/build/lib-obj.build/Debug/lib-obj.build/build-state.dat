@@ -1,0 +1,113 @@
+Tlib-obj
+v7
+r0
+t283222747.804293
+cCheck dependencies
+cCompileC build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/main.o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c normal x86_64 c com.apple.compilers.gcc.4_2
+cCompileC build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/obj.o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c normal x86_64 c com.apple.compilers.gcc.4_2
+cLd /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/lib-obj normal x86_64
+
+N/Developer/SDKs/MacOSX10.6.sdk
+c000000004ABBF0FD00000000000000EE
+t1253830909
+s238
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/stdio.h
+c000000004A5C14A70000000000004174
+t1247548583
+s16756
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/stdlib.h
+c000000004A5C14A70000000000002DF5
+t1247548583
+s11765
+
+N/Developer/SDKs/MacOSX10.6.sdk/usr/include/string.h
+c000000004A5C14A70000000000001731
+t1247548583
+s5937
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/lib-obj
+t1261529947
+s15512
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/lib-obj.LinkFileList
+c000000004B316AF700000000000000FF
+t1261529847
+s255
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/main.o
+t1261529944
+s3724
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/obj.o
+t1261529847
+s12356
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c
+c000000004B316B7800000000000000FA
+t1261529976
+s250
+i<stdio.h>
+i"obj.h"
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c
+c000000004B31682300000000000013F7
+t1261529123
+s5111
+i<stdio.h>
+i<stdlib.h>
+i<string.h>
+i"obj.h"
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.h
+c000000004B3167D20000000000000507
+t1261529042
+s1287
+i"objt.h"
+
+N/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/objt.h
+c000000004AFEF86000000000000003D6
+t1258223712
+s982
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies283222747#283222747#0(0"0(0#1#0"4300885448#0"0#
+
+CCompileC build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/main.o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c normal x86_64 c com.apple.compilers.gcc.4_2
+s283222747.620620
+e283222747.621687
+r1
+xCompileC
+xbuild/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/main.o
+x/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c
+xnormal
+xx86_64
+xc
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@73"Compile /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c283222747#283222747#0(189"/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c: In function 'main':/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c:6: warning: unused variable 'model'1(22@23"Unused variable 'model'283222747#87#102#0(6@65"/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c283222744#6#0#6#0#19"unused variable '*'0(0#0#65"/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c4300885448#1490"    cd /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-generated-files.hmap -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-own-target-headers.hmap -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-all-target-headers.hmap -iquote /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-project-headers.hmap -F/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/include -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/DerivedSources/x86_64 -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/DerivedSources -c /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/main.c -o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/main.o0#
+
+CCompileC build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/obj.o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c normal x86_64 c com.apple.compilers.gcc.4_2
+s283222647.724526
+e283222647.919230
+r1
+xCompileC
+xbuild/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/obj.o
+x/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c
+xnormal
+xx86_64
+xc
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@72"Compile /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c283222647#283222647#0(0"0(0#0#64"/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c4300885448#1488"    cd /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj    setenv LANG en_US.US-ASCII    /Developer/usr/bin/gcc-4.2 -x c -arch x86_64 -fmessage-length=0 -pipe -std=gnu99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -mfix-and-continue -mmacosx-version-min=10.6 -gdwarf-2 -iquote /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-generated-files.hmap -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-own-target-headers.hmap -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-all-target-headers.hmap -iquote /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/lib-obj-project-headers.hmap -F/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/include -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/DerivedSources/x86_64 -I/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/DerivedSources -c /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/obj.c -o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/obj.o0#
+
+CLd /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/lib-obj normal x86_64
+s283222747.621819
+e283222747.804247
+r1
+xLd
+x/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/lib-obj
+xnormal
+xx86_64
+lSLF07#2@83"Link /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/lib-obj283222747#283222747#0(0"0(0#0#0"4300885448#598"    cd /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Developer/usr/bin/gcc-4.2 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug -F/Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug -filelist /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/lib-obj.build/Debug/lib-obj.build/Objects-normal/x86_64/lib-obj.LinkFileList -mmacosx-version-min=10.6 -o /Users/claudio/Documents/Developer/iPhone/Projects/lib-obj/build/Debug/lib-obj0#
+

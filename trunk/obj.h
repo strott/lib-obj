@@ -18,10 +18,6 @@
 
 #define OBJ_ELEMENTS_COUNT 3
 
-typedef struct globals_s {
-    FILE *fp;
-} global;
-
 typedef struct obj_s {
     face *f;
     int f_count, f_size;
@@ -46,12 +42,12 @@ void _obj_update_data_struct(obj *, const char *);
 void _obj_optimize_data_struct(obj *);
 
 // File handling helpers
-void _obj_open_file(const char *);
-void _obj_close_file(void);
+FILE* _obj_open_file(const char *);
+void _obj_close_file(FILE *);
 
 // Data reading helpers
-int _obj_read_face(obj *);
-int _obj_read_face_vertex(obj *, int);
-int _obj_read_geometric_vertex(obj *);
-int _obj_read_vertex_normal(obj *);
+int _obj_read_face(FILE *fp, obj *);
+int _obj_read_face_vertex(FILE *, obj *, int);
+int _obj_read_geometric_vertex(FILE *, obj *);
+int _obj_read_vertex_normal(FILE *, obj *);
 //int _obj_read_texture_vertex();

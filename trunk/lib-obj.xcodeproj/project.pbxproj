@@ -29,6 +29,8 @@
 		08FB7796FE84155DC02AAC07 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		8DD76FB20486AB0100D96B5E /* lib-obj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "lib-obj"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A0FF2C0290799A04C91782 /* lib-obj.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = "lib-obj.1"; sourceTree = "<group>"; };
+		CAA2683C10E9A504001666B5 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
+		CAA2683D10E9A53C001666B5 /* sphereCube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphereCube.obj; sourceTree = "<group>"; };
 		CAAD6E3D10E1A25E00C0DFCE /* obj.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = obj.c; sourceTree = "<group>"; };
 		CAAD6E3E10E1A25E00C0DFCE /* obj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = obj.h; sourceTree = "<group>"; };
 		CAAD6E3F10E1A25E00C0DFCE /* objt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objt.h; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 		08FB7794FE84155DC02AAC07 /* lib-obj */ = {
 			isa = PBXGroup;
 			children = (
+				CAA2683B10E9A4D2001666B5 /* Resources */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6A0FF2B0290797F04C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
@@ -80,6 +83,15 @@
 				C6A0FF2C0290799A04C91782 /* lib-obj.1 */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		CAA2683B10E9A4D2001666B5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CAA2683D10E9A53C001666B5 /* sphereCube.obj */,
+				CAA2683C10E9A504001666B5 /* cube.obj */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

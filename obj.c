@@ -11,15 +11,14 @@
 #include <string.h>
 #include "obj.h"
 
-static global G;
-
 obj obj_process_file(const char *fname, const char **elements_requested) {
     obj O;
+    FILE *fp = NULL;
     char *buff = NULL, *item = NULL;
     const char **elements_enabled = NULL;
     int buff_size = 80;
 
-    _obj_open_file(fname);
+    fp = _obj_open_file(fname);
     _obj_init_data_struct(&O);
     _obj_init_elements(elements_enabled, elements_requested);
 
@@ -28,11 +27,11 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
 //          OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
 //          (int(*)(const void*, const void*)) strcmp);
 
-    while (!feof(G.fp)) {
-        while (fgets(buff, OBJ_ELEMENT_NAME_MAX_LENGTH, G.fp)) {
+    while (!feof(fp)) {
+        while (fgets(buff, OBJ_ELEMENT_NAME_MAX_LENGTH, fp)) {
             realloc(buff, sizeof(char) * buff_size);    
         }
-        fscanf(G.fp, "%10c", buff);
+        fscanf(fp, "%10c", buff);
         item = (char*) bsearch (buff, elements_enabled, 
                                 OBJ_ELEMENTS_COUNT, 
                                 OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
@@ -40,15 +39,15 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
 
         if (item != NULL) {
             if (strncmp(OBJ_ELEMENT_FACE, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                _obj_read_face(&O);
+                _obj_read_face(fp, &O);
                 continue;
             }
             if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                _obj_read_geometric_vertex(&O);
+                _obj_read_geometric_vertex(fp, &O);
                 continue;
             }
             if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                _obj_read_vertex_normal(&O);
+                _obj_read_vertex_normal(fp, &O);
                 continue;
             }
 //            if (strncmp(OBJ_ELEMENT_TEXTURE_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
@@ -59,7 +58,7 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
     }
 
     _obj_optimize_data_struct(&O);
-    _obj_close_file();
+    _obj_close_file(fp);
     return O;
 }
 
@@ -130,54 +129,56 @@ void _obj_optimize_data_struct(obj *O) {
 //    O->vt = realloc(O->vt, O->vt_size * sizeof(texture_vertex));
 }
 
-void _obj_open_file(const char *fname) {
-    if (!(G.fp = fopen(fname, "r"))) {
-        exit(ferror(G.fp));
+FILE* _obj_open_file(const char *fname) {
+    FILE *fp = NULL;
+    if (!(fp = fopen(fname, "r"))) {
+        exit(1);
+    }
+    return fp;
+}
+
+void _obj_close_file(FILE *fp) {
+    if (fclose(fp) == EOF) {
+        exit(ferror(fp));    
     }
 }
 
-void _obj_close_file(void) {
-    if (fclose(G.fp) == EOF) {
-        exit(ferror(G.fp));    
-    }
-}
-
-int _obj_read_face(obj *O) {
+int _obj_read_face(FILE *fp, obj *O) {
     if (++O->f_count >= O->f_size) {
         _obj_update_data_struct(O, OBJ_ELEMENT_FACE);
     }
     for (int i = 0; i < 3; ++i) {
-        if (!_obj_read_face_vertex(O, i)) {
+        if (!_obj_read_face_vertex(fp, O, i)) {
             return 0;
         }
     }
     return 1;
 }
 
-int _obj_read_face_vertex(obj *O, int i) {
-    fscanf(G.fp, "%d", &(O->f[O->f_count].fv[i].v));
-    if (fscanf(G.fp, "/") == 1) {
-        fscanf(G.fp, "%d", &(O->f[O->f_count].fv[i].vt));
-        fscanf(G.fp, "/%d", &(O->f[O->f_count].fv[i].vn));
+int _obj_read_face_vertex(FILE *fp, obj *O, int i) {
+    fscanf(fp, "%d", &(O->f[O->f_count].fv[i].v));
+    if (fscanf(fp, "/") == 1) {
+        fscanf(fp, "%d", &(O->f[O->f_count].fv[i].vt));
+        fscanf(fp, "/%d", &(O->f[O->f_count].fv[i].vn));
     }
     return 1;
 }
 
-int _obj_read_geometric_vertex(obj *O) {
+int _obj_read_geometric_vertex(FILE *fp, obj *O) {
     if (++O->v_count >= O->v_size) {
         _obj_update_data_struct(O, OBJ_ELEMENT_GEOMETRIC_VERTEX);
     }
-    if (fscanf(G.fp, "%f%f%f", &O->v[O->v_count].x, &O->v[O->v_count].y, &O->v[O->v_count].z) != 3) {
+    if (fscanf(fp, "%f%f%f", &O->v[O->v_count].x, &O->v[O->v_count].y, &O->v[O->v_count].z) != 3) {
         return 0;
     }
     return 1;
 }
 
-int _obj_read_vertex_normal(obj *O) {
+int _obj_read_vertex_normal(FILE *fp, obj *O) {
     if (++O->vn_count >= O->vn_size) {
         _obj_update_data_struct(O, OBJ_ELEMENT_VERTEX_NORMAL);
     }
-    if (fscanf(G.fp, "%f%f%f", &O->vn[O->vn_count].i, &O->vn[O->vn_count].j, &O->vn[O->vn_count].k) != 3) {
+    if (fscanf(fp, "%f%f%f", &O->vn[O->vn_count].i, &O->vn[O->vn_count].j, &O->vn[O->vn_count].k) != 3) {
         return 0;
     }
     return 1;

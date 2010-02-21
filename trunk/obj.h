@@ -6,48 +6,43 @@
  *  Copyright 2009 claudio beatrice. All rights reserved.
  *
  */
-#include "objt.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "elements.h"
 
-#define OBJ_ELEMENT_NAME_MAX_LENGTH 10
-#define OBJ_ELEMENT_LIST_MAX_LENGTH 100
-
-#define OBJ_ELEMENT_FACE             "f"
-#define OBJ_ELEMENT_GEOMETRIC_VERTEX "v"
-#define OBJ_ELEMENT_VERTEX_NORMAL    "vn"
-//#define OBJ_ELEMENT_TEXTURE_VERTEX "vt"
-
-#define OBJ_ELEMENTS_COUNT 3
+// prototype declarations for private functions.
+#define _PROTOTYPE(function, params) function params
+#define PRIVATE static
 
 typedef struct obj_s {
-    face *f;
-    int f_count, f_size;
-    
-    geometric_vertex *v;
-    int v_count, v_size;
+    #ifdef OBJ_ELEMENT_FACE
+        face *f;
+        int f_count, f_size;
+        int (*face_read) (FILE *, struct obj_s *);
+    #endif
+        
+    #ifdef OBJ_ELEMENT_GEOMETRIC_VERTEX
+        geometric_vertex *v;
+        int v_count, v_size;
+        int (*geometric_vertex_read) (FILE *, struct obj_s *);
+    #endif
 
-    vertex_normal *vn;
-    int vn_count, vn_size;
-
-    //    texture_vertex *vt;
-    //    int vt_count, vt_size;    
+    #ifdef OBJ_ELEMENT_VERTEX_NORMAL
+        vertex_normal *vn;
+        int vn_count, vn_size;
+        int (*vertex_normal_read) (FILE *, struct obj_s *);
+    #endif
 } obj;
 
 // Function to be used for loading the file
 obj obj_process_file(const char *, const char **);
 
 // Data structures helpers
-int  _obj_init_elements(const char **, const char **);
-void _obj_init_data_struct(obj *);
-void _obj_update_data_struct(obj *, const char *);
-void _obj_optimize_data_struct(obj *);
+PRIVATE _PROTOTYPE(void obj_init, (obj *));
+PRIVATE _PROTOTYPE(void obj_realloc, (obj *, const char *));
+PRIVATE _PROTOTYPE(void obj_optimize, (obj *));
 
-// File handling helpers
-FILE* _obj_open_file(const char *);
-void _obj_close_file(FILE *);
-
-// Data reading helpers
-int _obj_read_face(FILE *fp, obj *);
-int _obj_read_face_vertex(FILE *, obj *, int);
-int _obj_read_geometric_vertex(FILE *, obj *);
-int _obj_read_vertex_normal(FILE *, obj *);
-//int _obj_read_texture_vertex();
+// File handling private functions
+PRIVATE _PROTOTYPE(FILE * obj_file_open, (const char *));
+PRIVATE _PROTOTYPE(void obj_file_close, (FILE *));

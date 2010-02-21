@@ -6,185 +6,174 @@
  *  Copyright 2009 claudio beatrice. All rights reserved.
  *
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "obj.h"
 
 obj obj_process_file(const char *fname, const char **elements_requested) {
     obj O;
     FILE *fp = NULL;
-    char *buff = NULL, *item = NULL;
-    const char **elements_enabled = NULL;
     int buff_size = 80;
+    char *buff = calloc(buff_size, sizeof(char)), 
+         item[OBJ_ELEMENT_NAME_MAX_LENGTH];
 
-    fp = _obj_open_file(fname);
-    _obj_init_data_struct(&O);
-    _obj_init_elements(elements_enabled, elements_requested);
+    fp = obj_file_open(fname);
+    obj_init(&O);
 
-//    qsort(elements_enabled, 
-//          OBJ_ELEMENTS_COUNT, 
-//          OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
-//          (int(*)(const void*, const void*)) strcmp);
-
+    // until I haven't finished to read the file
     while (!feof(fp)) {
+        // I read a line from the file. If it exceeds OBJ_ELEMENT_NAME_MAX_LENGTH allocate some more memory
         while (fgets(buff, OBJ_ELEMENT_NAME_MAX_LENGTH, fp)) {
-            realloc(buff, sizeof(char) * buff_size);    
+            if (strlen(buff) >= buff_size) {
+                buff_size *= 2;
+                realloc(buff, sizeof(char) * buff_size);
+            }
         }
-        fscanf(fp, "%10c", buff);
-        item = (char*) bsearch (buff, elements_enabled, 
-                                OBJ_ELEMENTS_COUNT, 
-                                OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
-                                (int(*)(const void*, const void*)) strcmp);
+        
+        //TODO: scan for item's name
 
         if (item != NULL) {
-            if (strncmp(OBJ_ELEMENT_FACE, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                _obj_read_face(fp, &O);
-                continue;
-            }
-            if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                _obj_read_geometric_vertex(fp, &O);
-                continue;
-            }
-            if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                _obj_read_vertex_normal(fp, &O);
-                continue;
-            }
-//            if (strncmp(OBJ_ELEMENT_TEXTURE_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-//                _obj_read_texture_vertex(&O);
-//                continue;
-//            }
+            #ifdef OBJ_ELEMENT_FACE
+                if (strncmp(OBJ_ELEMENT_FACE, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+                    face f;
+                    if (_face_read(fp, &f)) {
+                        // TODO: store face into obj and 
+                        // check if there's still space for further storing
+                    }
+                    continue;
+                }
+            #endif
+
+            #ifdef OBJ_ELEMENT_GEOMETRIC_VERTEX
+                if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+                    geometric_vertex g;
+                    if (_geometric_vertex_read(fp, &g)) {
+                        // TODO: store geometric_vertex into obj and 
+                        // check if there's still space for further storing, 
+                        // check following commented piece of old code as reference  
+                        /*
+                         int _geometric_vertex_read(FILE *fp, obj *O) {
+                             if (++O->v_count >= O->v_size) {
+                             _obj_update_data_struct(O, OBJ_ELEMENT_GEOMETRIC_VERTEX);
+                             }
+                             if (fscanf(fp, "%f%f%f", &O->v[O->v_count].x, &O->v[O->v_count].y, &O->v[O->v_count].z) != 3) {
+                                 return 0;
+                             }
+                             return 1;
+                         }
+                        */
+                    }
+                    continue;
+                }
+            #endif
+
+            #ifdef OBJ_ELEMENT_VERTEX_NORMAL
+                if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+                    vertex_normal vn;
+                    if (_vertex_normal_read(fp, &vn)) {
+                        // TODO: store vertex_normal into obj and 
+                        // check if there's still space for further storing
+                    }
+                    continue;
+                }
+            #endif
         }
     }
 
-    _obj_optimize_data_struct(&O);
-    _obj_close_file(fp);
+    obj_optimize(&O);
+    obj_file_close(fp);
     return O;
 }
 
-int _obj_init_elements(const char **elements_enabled, const char **elements_requested) {
-    int i, j = 0;
-    
-    for (i = 0; i < OBJ_ELEMENTS_COUNT; j += elements_enabled[i++] ? 1 : 0) {
-        elements_enabled[i] = (char*) bsearch (elements_enabled[i], elements_requested, 
-                                               OBJ_ELEMENTS_COUNT, 
-                                               OBJ_ELEMENT_NAME_MAX_LENGTH * sizeof(char), 
-                                               (int(*)(const void*, const void*)) strcmp);
-    }
-    
-    return j;
+/**
+ * Perform memory allocation for object's supported elements
+ */
+void obj_init(obj *O) {
+    #ifdef OBJ_ELEMENT_FACE
+        O->f_count = 0;
+        O->f_size  = OBJ_ELEMENT_LIST_MAX_LENGTH;
+        O->f       = calloc(O->f_size, sizeof(face));
+    #endif
+
+    #ifdef OBJ_ELEMENT_GEOMETRIC_VERTEX
+        O->v_count = 0;
+        O->v_size  = OBJ_ELEMENT_LIST_MAX_LENGTH;
+        O->v       = calloc(O->v_size, sizeof(geometric_vertex));
+    #endif
+
+    #ifdef OBJ_ELEMENT_VERTEX_NORMAL
+        O->vn_count = 0;
+        O->vn_size  = OBJ_ELEMENT_LIST_MAX_LENGTH;
+        O->vn       = calloc(O->vn_size, sizeof(vertex_normal));
+    #endif
 }
 
-void _obj_init_data_struct(obj *O) {
-    O->f_count = 0;
-    O->f_size  = 100;
-    O->f  = calloc(O->f_size, sizeof(face));
-    
-    O->v_count = 0;
-    O->v_size  = 100;
-    O->v       = calloc(O->v_size, sizeof(geometric_vertex));
-    
-    O->vn_count = 0;
-    O->vn_size  = 100;
-    O->vn = calloc(O->vn_size, sizeof(vertex_normal));
-    
-//    O->vt_count = 0;
-//    O->vt_size  = 100;
-//    O->vt = calloc(O->vt_size, sizeof(texture_vertex));
+/**
+ * Perform memory reallocation for object's supported elements
+ * 
+ * This function is called when more space is required for storing data read from given file 
+ */
+void obj_realloc(obj *O, const char *name) {
+    #ifdef OBJ_ELEMENT_FACE
+        if (strncmp(OBJ_ELEMENT_FACE, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+            O->f_size *= 2;
+            O->f = realloc(O->f, O->f_size * sizeof(face));
+        }
+    #endif
+
+    #ifdef OBJ_ELEMENT_GEOMETRIC_VERTEX
+        if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+            O->v_size *= 2;
+            O->v = realloc(O->v, O->v_size * sizeof(geometric_vertex));
+        }
+    #endif
+
+    #ifdef OBJ_ELEMENT_VERTEX_NORMAL
+        if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
+            O->vn_size *= 2;
+            O->vn = realloc(O->vn, O->vn_size * sizeof(vertex_normal));
+        }
+    #endif
 }
 
-void _obj_update_data_struct(obj *O, const char *name) {
-    if (strncmp(OBJ_ELEMENT_FACE, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-        O->f_size *= 2;
+/**
+ * Perform memory optimization on object's supported elements
+ * 
+ * This function is called when the data loading is finished to deallocate unused memory 
+ */
+void obj_optimize(obj *O) {
+    #ifdef OBJ_ELEMENT_FACE
+        O->f_size = O->f_count;
         O->f = realloc(O->f, O->f_size * sizeof(face));
-    }
-    
-    if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-        O->v_size *= 2;
+    #endif
+
+    #ifdef OBJ_ELEMENT_GEOMETRIC_VERTEX
+        O->v_size = O->v_count;
         O->v = realloc(O->v, O->v_size * sizeof(geometric_vertex));
-    }
+    #endif
 
-    if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-        O->vn_size *= 2;
+    #ifdef OBJ_ELEMENT_VERTEX_NORMAL
+        O->vn_size = O->vn_count;
         O->vn = realloc(O->vn, O->vn_size * sizeof(vertex_normal));
-    }
-    
-//    if (strncmp(OBJ_ELEMENT_TEXTURE_VERTEX, name, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-//      O->vt_size *= 2;
-//      O->vt = realloc(O->vt, O->vt_size * sizeof(texture_vertex));
-//    }
+    #endif
 }
 
-void _obj_optimize_data_struct(obj *O) {
-    O->f_size = O->f_count;
-    O->f = realloc(O->f, O->f_size * sizeof(face));
-    
-    O->v_size = O->v_count;
-    O->v = realloc(O->v, O->v_size * sizeof(geometric_vertex));
-
-    O->vn_size = O->vn_count;
-    O->vn = realloc(O->vn, O->vn_size * sizeof(vertex_normal));
-
-//    O->vt_size = O->vt_count;
-//    O->vt = realloc(O->vt, O->vt_size * sizeof(texture_vertex));
-}
-
-FILE* _obj_open_file(const char *fname) {
+/**
+ * Open a file and perform basic check
+ */
+FILE* obj_file_open(const char *fname) {
     FILE *fp = NULL;
     if (!(fp = fopen(fname, "r"))) {
+        printf("Error opening file '%s'", fname);
         exit(1);
     }
     return fp;
 }
 
-void _obj_close_file(FILE *fp) {
+/**
+ * Close a file
+ */
+void obj_file_close(FILE *fp) {
     if (fclose(fp) == EOF) {
+        printf("Error closing file");
         exit(ferror(fp));    
     }
 }
-
-int _obj_read_face(FILE *fp, obj *O) {
-    if (++O->f_count >= O->f_size) {
-        _obj_update_data_struct(O, OBJ_ELEMENT_FACE);
-    }
-    for (int i = 0; i < 3; ++i) {
-        if (!_obj_read_face_vertex(fp, O, i)) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int _obj_read_face_vertex(FILE *fp, obj *O, int i) {
-    fscanf(fp, "%d", &(O->f[O->f_count].fv[i].v));
-    if (fscanf(fp, "/") == 1) {
-        fscanf(fp, "%d", &(O->f[O->f_count].fv[i].vt));
-        fscanf(fp, "/%d", &(O->f[O->f_count].fv[i].vn));
-    }
-    return 1;
-}
-
-int _obj_read_geometric_vertex(FILE *fp, obj *O) {
-    if (++O->v_count >= O->v_size) {
-        _obj_update_data_struct(O, OBJ_ELEMENT_GEOMETRIC_VERTEX);
-    }
-    if (fscanf(fp, "%f%f%f", &O->v[O->v_count].x, &O->v[O->v_count].y, &O->v[O->v_count].z) != 3) {
-        return 0;
-    }
-    return 1;
-}
-
-int _obj_read_vertex_normal(FILE *fp, obj *O) {
-    if (++O->vn_count >= O->vn_size) {
-        _obj_update_data_struct(O, OBJ_ELEMENT_VERTEX_NORMAL);
-    }
-    if (fscanf(fp, "%f%f%f", &O->vn[O->vn_count].i, &O->vn[O->vn_count].j, &O->vn[O->vn_count].k) != 3) {
-        return 0;
-    }
-    return 1;
-}
-
-//int _obj_read_texture_vertex() {
-//    //TODO implement
-//    return 1;
-//}

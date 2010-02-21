@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		8DD76FAC0486AB0100D96B5E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.c */; settings = {ATTRIBUTES = (); }; };
 		8DD76FB00486AB0100D96B5E /* lib-obj.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6A0FF2C0290799A04C91782 /* lib-obj.1 */; };
+		CA7987721130B6DE00568451 /* geometric_vertex.c in Sources */ = {isa = PBXBuildFile; fileRef = CA7987711130B6DE00568451 /* geometric_vertex.c */; };
+		CA7987771130C07A00568451 /* face.c in Sources */ = {isa = PBXBuildFile; fileRef = CA7987761130C07A00568451 /* face.c */; };
+		CA79887A1130F1D700568451 /* vertex_normal.c in Sources */ = {isa = PBXBuildFile; fileRef = CA7988781130F1D700568451 /* vertex_normal.c */; };
 		CAAD6E4010E1A25E00C0DFCE /* obj.c in Sources */ = {isa = PBXBuildFile; fileRef = CAAD6E3D10E1A25E00C0DFCE /* obj.c */; };
 /* End PBXBuildFile section */
 
@@ -29,11 +32,18 @@
 		08FB7796FE84155DC02AAC07 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		8DD76FB20486AB0100D96B5E /* lib-obj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "lib-obj"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A0FF2C0290799A04C91782 /* lib-obj.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = "lib-obj.1"; sourceTree = "<group>"; };
+		CA7987701130B6DE00568451 /* geometric_vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geometric_vertex.h; path = elements/geometric_vertex.h; sourceTree = "<group>"; };
+		CA7987711130B6DE00568451 /* geometric_vertex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geometric_vertex.c; path = elements/geometric_vertex.c; sourceTree = "<group>"; };
+		CA7987751130C07A00568451 /* face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = face.h; path = elements/face.h; sourceTree = "<group>"; };
+		CA7987761130C07A00568451 /* face.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = face.c; path = elements/face.c; sourceTree = "<group>"; };
+		CA79878F1130C7E500568451 /* elements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = elements.h; sourceTree = "<group>"; };
+		CA7988781130F1D700568451 /* vertex_normal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vertex_normal.c; path = elements/vertex_normal.c; sourceTree = "<group>"; };
+		CA7988791130F1D700568451 /* vertex_normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vertex_normal.h; path = elements/vertex_normal.h; sourceTree = "<group>"; };
+		CA7988E11130F68600568451 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base.h; path = elements/base.h; sourceTree = "<group>"; };
 		CAA2683C10E9A504001666B5 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
 		CAA2683D10E9A53C001666B5 /* sphereCube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphereCube.obj; sourceTree = "<group>"; };
 		CAAD6E3D10E1A25E00C0DFCE /* obj.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = obj.c; sourceTree = "<group>"; };
 		CAAD6E3E10E1A25E00C0DFCE /* obj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = obj.h; sourceTree = "<group>"; };
-		CAAD6E3F10E1A25E00C0DFCE /* objt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objt.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,10 +71,11 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CA79876B1130B0B500568451 /* elements */,
 				CAAD6E3D10E1A25E00C0DFCE /* obj.c */,
 				CAAD6E3E10E1A25E00C0DFCE /* obj.h */,
-				CAAD6E3F10E1A25E00C0DFCE /* objt.h */,
 				08FB7796FE84155DC02AAC07 /* main.c */,
+				CA79878F1130C7E500568451 /* elements.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -83,6 +94,20 @@
 				C6A0FF2C0290799A04C91782 /* lib-obj.1 */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		CA79876B1130B0B500568451 /* elements */ = {
+			isa = PBXGroup;
+			children = (
+				CA7987751130C07A00568451 /* face.h */,
+				CA7987761130C07A00568451 /* face.c */,
+				CA7987701130B6DE00568451 /* geometric_vertex.h */,
+				CA7987711130B6DE00568451 /* geometric_vertex.c */,
+				CA7988791130F1D700568451 /* vertex_normal.h */,
+				CA7988781130F1D700568451 /* vertex_normal.c */,
+				CA7988E11130F68600568451 /* base.h */,
+			);
+			name = elements;
 			sourceTree = "<group>";
 		};
 		CAA2683B10E9A4D2001666B5 /* Resources */ = {
@@ -139,6 +164,9 @@
 			files = (
 				8DD76FAC0486AB0100D96B5E /* main.c in Sources */,
 				CAAD6E4010E1A25E00C0DFCE /* obj.c in Sources */,
+				CA7987721130B6DE00568451 /* geometric_vertex.c in Sources */,
+				CA7987771130C07A00568451 /* face.c in Sources */,
+				CA79887A1130F1D700568451 /* vertex_normal.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

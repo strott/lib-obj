@@ -12,7 +12,7 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
     obj O;
     FILE *fp = NULL;
     int buff_size = 80;
-    char *buff = calloc(buff_size, sizeof(char)), 
+    char *buff = malloc(buff_size * sizeof(char)), 
          item[OBJ_ELEMENT_NAME_MAX_LENGTH];
 
     fp = obj_file_open(fname);
@@ -20,15 +20,21 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
 
     // until I haven't finished to read the file
     while (!feof(fp)) {
+        int i = 0;
+
+        memset(buff, '\0', buff_size);
+
         // I read a line from the file. If it exceeds OBJ_ELEMENT_NAME_MAX_LENGTH allocate some more memory
-        while (fgets(buff, OBJ_ELEMENT_NAME_MAX_LENGTH, fp)) {
-            if (strlen(buff) >= buff_size) {
+        while ((buff[i++] = fgetc(fp)) != '\n') {
+            if (i >= buff_size) {
                 buff_size *= 2;
                 realloc(buff, sizeof(char) * buff_size);
             }
         }
         
-        //TODO: scan for item's name
+        for (i = 0; buff[i] != ' ' && i < OBJ_ELEMENT_NAME_MAX_LENGTH; ++i) {
+            item[i] = buff[i];
+        }
 
         if (item != NULL) {
             #ifdef OBJ_ELEMENT_FACE

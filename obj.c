@@ -8,29 +8,33 @@
  */
 #include "obj.h"
 
-obj obj_process_file(const char *fname, const char **elements_requested) {
-    obj O;
+int obj_process_file(obj *O, const char *fname, const char **elements_requested) {
     FILE *fp = NULL;
     int buff_size = 80;
     char *buff = malloc(buff_size * sizeof(char)), 
          item[OBJ_ELEMENT_NAME_MAX_LENGTH];
 
     fp = obj_file_open(fname);
-    obj_init(&O);
+    obj_init(O);
 
     // until I haven't finished to read the file
     while (!feof(fp)) {
         int i = 0;
 
         memset(buff, '\0', buff_size);
+        memset(item, '\0', OBJ_ELEMENT_NAME_MAX_LENGTH);
 
         // I read a line from the file. If it exceeds OBJ_ELEMENT_NAME_MAX_LENGTH allocate some more memory
-        while ((buff[i++] = fgetc(fp)) != '\n') {
-            if (i >= buff_size) {
+        while (buff[i] = fgetc(fp)) {
+            if (buff[i] == '\n' || buff[i] == EOF) {
+                break;
+            }
+            if (i++ >= buff_size) {
                 buff_size *= 2;
                 realloc(buff, sizeof(char) * buff_size);
             }
         }
+        buff[i] = '\0';
         
         for (i = 0; buff[i] != ' ' && i < OBJ_ELEMENT_NAME_MAX_LENGTH; ++i) {
             item[i] = buff[i];
@@ -39,8 +43,7 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
         if (item != NULL) {
             #ifdef OBJ_ELEMENT_FACE
                 if (strncmp(OBJ_ELEMENT_FACE, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                    face f;
-                    if (_face_read(fp, &f)) {
+                    if (_face_read(&buff[i], &O->f[O->f_count++])) {
                         // TODO: store face into obj and 
                         // check if there's still space for further storing
                     }
@@ -50,8 +53,7 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
 
             #ifdef OBJ_ELEMENT_GEOMETRIC_VERTEX
                 if (strncmp(OBJ_ELEMENT_GEOMETRIC_VERTEX, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                    geometric_vertex g;
-                    if (_geometric_vertex_read(fp, &g)) {
+                    if (_geometric_vertex_read(&buff[i], &O->v[O->v_count++])) {
                         // TODO: store geometric_vertex into obj and 
                         // check if there's still space for further storing, 
                         // check following commented piece of old code as reference  
@@ -73,8 +75,7 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
 
             #ifdef OBJ_ELEMENT_VERTEX_NORMAL
                 if (strncmp(OBJ_ELEMENT_VERTEX_NORMAL, item, OBJ_ELEMENT_NAME_MAX_LENGTH) == 0) {
-                    vertex_normal vn;
-                    if (_vertex_normal_read(fp, &vn)) {
+                    if (_vertex_normal_read(&buff[i], &O->vn[O->vn_count++])) {
                         // TODO: store vertex_normal into obj and 
                         // check if there's still space for further storing
                     }
@@ -84,9 +85,9 @@ obj obj_process_file(const char *fname, const char **elements_requested) {
         }
     }
 
-    obj_optimize(&O);
+    obj_optimize(O);
     obj_file_close(fp);
-    return O;
+    return 1;
 }
 
 /**

@@ -36,7 +36,7 @@ typedef struct obj_s {
 } obj;
 
 // Function to be used for loading the file
-obj obj_process_file(const char *, const char **);
+int obj_process_file(obj *, const char *, const char **);
 
 // Data structures helpers
 PRIVATE _PROTOTYPE(void obj_init, (obj *));

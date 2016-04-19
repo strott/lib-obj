@@ -1,0 +1,1 @@
+The goal of this library is to make available an easy way to load Wavefront's Object files within a C context. It is designed to support OpenGL ES specifications, so it could be helpful on mobile devices
